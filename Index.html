@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Email Signature Generator</title>
+	<style>
+		body {
+			font-family: 'Lato', sans-serif;
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		label {
+			display: block;
+			margin-top: 20px;
+		}
+
+		input, select {
+			display: block;
+			width: 100%;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			margin-top: 5px;
+			margin-bottom: 20px;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+
+		button:hover {
+			background-color: #3e8e41;
+		}
+
+		.signature {
+			margin-top: 30px;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.signature div {
+			flex-grow: 1;
+			max-width: 400px;
+			padding-right: 20px;
+			box-sizing: border-box;
+		}
+
+		.signature p {
+			margin: 5px 0;
+			line-height: 1.2em;
+		}
+
+		.disclaimer {
+			margin-top: 20px;
+			font-size: 12px;
+		}
+
+	</style>
+</head>
+<body>
+	<h1>Email Signature Generator</h1>
+	<form>
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name" required>
+
+		<label for="position">Position:</label>
+		<input type="text" id="position" name="position" required>
+
+		<label for="location">Location:</label>
+		<select id="location" name="location" required>
+			<option value="">Select a location</option>
+			<option value="capua">Tecnam Capua</option>
+			<option value="usa">Tecnam USA</option>
+			<option value="australia">Tecnam Australia</option>
+		</select>
+
+		<label for="officeNumber">Office Number:</label>
+		<input type="tel" id="officeNumber" name="officeNumber" required>
+
+		<label for="faxNumber">Fax Number:</label>
+		<input type="tel" id="faxNumber" name="faxNumber" required>
+
+		<label for="mobileNumber">Mobile Number:</label>
+		<input type="tel" id="mobileNumber" name="mobileNumber" required>
+
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required>
+
+		<button type="submit">Generate Signature</button>
+	</form>
+
+	<div id="signature-container"></div>
+
+	<script>
+		const form = document.querySelector('form');
+		const signatureContainer = document.getElementById('signature-container');
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			// Get the user's information from the form
+			const name = document.getElementById('name').value;
+			const position = document.getElementById('position').value;
+			const location = document.getElementById('location').value;
+const officeNumber = document.getElementById('officeNumber').value;
+const faxNumber = document.getElementById('faxNumber').value;
+const mobileNumber = document.getElementById('mobileNumber').value;
+const email = document.getElementById('email').value;
+		// Generate the signature HTML code
+		const signatureHtml = `
+			<div class="signature">
+				<div>
+					<p>${name}</p>
+					<p>${position}</p>
+					<p>_____________________________________</p>
+					<p>`;
+
+		if (location === 'capua') {
+			signatureHtml += `Costruzioni Aeronautiche TECNAM S.p.A<br>
+								Capua Plant<br>
+								Via Maiorise<br>
+								81043 Capua (CE) Italy`;
+		} else if (location === 'usa') {
+			signatureHtml += `TECNAM US, Inc<br>
+								US Headquarter<br>
+								29536 Flying Fortress Lane, Suite 1<br>
+								Sebring, Florida 33870`;
+		} else if (location === 'australia') {
+			signatureHtml += `TECNAM PTY LTD<br>
+								AU Headquarter<br>
+								Brisbane QLD, Australia PO Box 247<br>
+								Runaway Bay QLD 4216, AUSTRALIA`;
+		}
+
+		signatureHtml += `</p>
+					<p>Office: ${officeNumber}</p>
+					<p>Fax: ${faxNumber}</p>
+					<p>Mob: ${mobileNumber}</p>
+					<p>Mail: ${email}</p>
+					<p><img src="https://i.postimg.cc/bJxJbN8y/Primary-Logo-1.png" alt="TECNAM Logo" style="max-width: 200px;"></p>
+					<div class="disclaimer">
+						<p>DISCLAIMER The information in this message is confidential and may be legally privileged. It is intended solely for the addressee. Access to this message by anyone else is unauthorized. If you are not the intended recipient, any disclosure, copying, or distribution of the message, or any action or omission taken by you in reliance on it, is prohibited and may be unlawful. Please immediately contact the sender if you have received this message in error. Thank you.</p>
+					</div>
+				</div>
+			</div>
+		`;
+
+		// Insert the signature HTML code into the container
+		signatureContainer.innerHTML = signatureHtml;
+
+		// Create a temporary div element to hold the signature HTML
+		const temp = document.createElement('div');
+		temp.innerHTML = signatureHtml;
+
+		// Select the signature HTML and the image and copy them to the clipboard
+		const range = document.createRange();
+		range.selectNode(temp);
+		window.getSelection().removeAllRanges();
+		window.getSelection().addRange(range);
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges();
+
+		// Show a success message
+		alert('Signature generated and copied to clipboard!');
+	});
+</script>
+</body>
+</html>
+
